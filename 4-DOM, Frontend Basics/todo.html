@@ -32,6 +32,18 @@
 
       parent.appendChild(createChild(title, description, globalId++));
     }
+
+    function updateDomAccToState (state) {
+        const parent = document.getElementById("container");
+
+        for (let i = 0; i < state.length; i++) {
+            const child = createChild(state[i].title, state[i].description, state[i].id);
+            parent.appendChild(child)
+        }
+    }
+
+
+
   </script>
 </head>
 
