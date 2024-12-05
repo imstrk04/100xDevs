@@ -38,6 +38,31 @@ const app = express();
 
 const port = 3000;
 
+//
+//{
+//  email: string => email 
+//  password: atleast 8 letter
+//  country: IN, US 
+// }
+//
+
+
+const z = require("zod");
+const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    country: z.literal("IN").or(z.literal("US")),
+    kidneys: z.array(z.number())
+})
+
+const validateInput = (obj) => {
+
+    const response = schema.safeParse(obj);
+    return response;
+}
+
+
+
 let numberOfRequest = 0;
 
 app.use(express.json());
@@ -103,16 +128,42 @@ app.get('/heart-checkup', userMiddleware, (req, res) => {
 app.post('/health-checkup', (req, res) => {
     // kidneys = [1, 2] (expecting an array )
     const kidneys = req.body.kidneys;
-    const kidneyLength = kidneys.length;
+    const response = schema.safeParse(kidneys);
 
-    res.send("Your kidney length is " + kidneyLength);
+    if (!response.success) {
+        res.status(411).json({
+            msg: "input is invalid"
+        })
+    }
+
+    res.send({
+        response
+    })
 });
+
+
+app.post('/login', (req, res) => {
+    const response = validateInput(req.body);
+    if (!response.success) {
+        res.json({
+            msg: "Your inputs are invalid"
+        })
+        return;
+    }
+
+    else {
+        res.send("You details are right");
+    }
+});
+
+
+
 
 // global catches
 
-app.use(function(err, req, res, next) {
-    res.status(500).send("An Internal server error occured");
-});
+// app.use(function(err, req, res, next) {
+//     res.status(500).send("An Internal server error occured");
+// });
 
 app.listen(port, () => {
     console.log("Listening!!")
