@@ -54,7 +54,22 @@ app.post('signup', (req, res) => {
     const password = req.body.password;
     const name = req.body.name;
 
-    const existingUser = User.findOne({email: username});
+    const existingUser = await User.findOne({email: username});
+    if (existingUser) {
+        return res.status(400).send("Username already exists");
+    }
+
+    const user = new User({
+        name: name,
+        username: username,
+        password: password
+    });
+
+    user.save();
+    res.json({
+        "msg" : "User created successfully"
+    })
+    
 });
 
 app.get("/users", (req, res) => {
