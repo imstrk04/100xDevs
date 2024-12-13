@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest</title>
+    <script>
+        async function populateDiv() {
+            const principal = document.getElementById("principal");
+            const roi = document.getElementById("roi");
+            const time = document.getElementById("time");
+
+            const response = await fetch("");
+            const ans = await response.text();
+            document.getElementById("finalInterest").innerHTML = ans;
+        }
+    </script>
+</head>
+<body>
+    <input id="principal" type="text" placeholder="Enter Principal Amount">
+    <input id = "roi" type="text" placeholder="Enter Rate of Interest">
+    <input id = "time" type="text" placeholder="Enter Time:">
+    <br>
+    <br>
+    <button>Calculate Interest</button>
+
+    <div id="finalInterest"></div>
+</body>
+</html>
