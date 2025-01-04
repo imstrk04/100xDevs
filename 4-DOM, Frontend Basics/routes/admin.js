@@ -14,11 +14,25 @@ router.post('/signup', async (req, res) => {
         password: password  
     })
     res.json({
-        message: "Admin created successfully"; 
+        message: "Admin created successfully"
     });
-
+})
 router.post('/courses', adminMiddleware, async (req, res) => {
     // Implement course creation logic
+    const title = req.body.title;   
+    const description = req.body.description;   
+    const price = req.body.price;
+    const imageLink = req.body.imageLink;
+
+    const newCourse = await Course.create({
+        title: title,
+        description: description,
+        price: price,
+        imageLink: imageLink
+    })
+    res.json({
+        message: "Course created successfully", courseId: newCourse._id
+    });
     
 });
 
